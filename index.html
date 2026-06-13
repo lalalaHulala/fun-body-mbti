@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>趣味自测 · 身体性格双重MBTI</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- 0. 欢迎页 -->
+  <section id="screen-welcome" class="screen active">
+    <div class="welcome-bg"></div>
+    <div class="welcome-content">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <span class="logo-body">🧬</span>
+          <span class="logo-x">×</span>
+          <span class="logo-mbti">🧠</span>
+        </div>
+        <h1 class="title-main">身体 × 性格<br>双重MBTI自测</h1>
+        <p class="subtitle">8道身体感觉题 + 20道性格场景题 · 生成你的身心密码</p>
+      </div>
+      <div class="feature-cards">
+        <div class="fcard"><span class="fcard-icon">🫀</span><span>身体感觉自测</span></div>
+        <div class="fcard"><span class="fcard-icon">🧩</span><span>性格场景自测</span></div>
+        <div class="fcard"><span class="fcard-icon">🃏</span><span>人格卡牌结果</span></div>
+      </div>
+      <button class="btn-start" onclick="app.startTest()">
+        <span>开始测试</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <button class="btn-skip" onclick="app.skipBody()">跳过身体测试，仅做性格 →</button>
+    </div>
+  </section>
+
+  <!-- 1. 身体感觉自测（8题） -->
+  <section id="screen-body-feel" class="screen">
+    <div class="test-header">
+      <div class="progress-bar"><div class="progress-fill" id="body-feel-progress" style="background:#f97316;"></div></div>
+      <span class="test-label">🫀 身体感觉</span>
+      <span class="step-counter" id="body-feel-step">1 / 8</span>
+    </div>
+    <div class="question-card" id="body-feel-card">
+      <div class="q-number" style="color:#f97316;background:rgba(249,115,22,0.15);">身体密码</div>
+      <h2 class="q-text" id="body-feel-qtext"></h2>
+      <div class="options-grid" id="body-feel-options"></div>
+    </div>
+    <div class="nav-btns" id="body-feel-nav" style="display:none;">
+      <button class="btn-back" onclick="app.prevBodyFeel()">← 上一题</button>
+    </div>
+  </section>
+
+  <!-- 3. 性格MBTI测试 -->
+  <section id="screen-mbti" class="screen">
+    <div class="test-header">
+      <div class="progress-bar"><div class="progress-fill" id="mbti-progress"></div></div>
+      <span class="test-label">🧠 性格自测（E/N/T/P维度）</span>
+      <span class="step-counter" id="mbti-step">1 / 20</span>
+    </div>
+    <div class="question-card" id="mbti-question-card">
+      <div class="q-number" id="mbti-qnum">Q1</div>
+      <h2 class="q-text" id="mbti-qtext"></h2>
+      <div class="options-grid mbti-options" id="mbti-options"></div>
+    </div>
+    <div class="nav-btns" id="mbti-nav" style="display:none;">
+      <button class="btn-back" onclick="app.prevQuestion('mbti')">← 上一题</button>
+    </div>
+  </section>
+
+  <!-- 4. 加载动画 -->
+  <section id="screen-loading" class="screen">
+    <div class="loading-container">
+      <div class="dna-helix">
+        <div class="strand s1"></div><div class="strand s2"></div>
+        <div class="rung r1"></div><div class="rung r2"></div><div class="rung r3"></div>
+        <div class="rung r4"></div><div class="rung r5"></div>
+      </div>
+      <p class="loading-text">正在解析你的双重密码…</p>
+    </div>
+  </section>
+
+  <!-- 5. 结果页 -->
+  <section id="screen-result" class="screen">
+    <div class="result-container">
+
+      <!-- 双类型卡片 -->
+      <div class="dual-types">
+        <div class="type-card body-type" id="result-body-card">
+          <div class="type-badge">身体类型</div>
+          <div class="type-emoji" id="result-body-emoji"></div>
+          <div class="type-name" id="result-body-name"></div>
+          <div class="type-tagline" id="result-body-tagline"></div>
+        </div>
+        <div class="type-connector"><span class="connector-symbol">×</span></div>
+        <div class="type-card mbti-type" id="result-mbti-card">
+          <div class="type-badge">性格类型</div>
+          <div class="type-emoji" id="result-mbti-emoji"></div>
+          <div class="type-name" id="result-mbti-name"></div>
+          <div class="type-tagline" id="result-mbti-tagline"></div>
+        </div>
+      </div>
+
+      <!-- 融合解读 -->
+      <div class="fusion-box">
+        <h3 class="fusion-title">🌟 你的双重密码解读</h3>
+        <div class="fusion-desc" id="result-fusion"></div>
+      </div>
+
+      <!-- 身体物质维度 -->
+      <div class="section-title">🫀 身体物质维度详情</div>
+      <div id="body-dimensions-container" class="body-dims-list"></div>
+
+      <!-- 性格维度详情 -->
+      <div class="section-title">🧠 性格维度详情</div>
+      <div class="details-grid">
+        <div class="detail-item">
+          <span class="detail-label">能量响应</span>
+          <div class="detail-bar"><div class="detail-fill" id="bar-ei"></div></div>
+          <span class="detail-val" id="val-ei"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">稳定适应</span>
+          <div class="detail-bar"><div class="detail-fill" id="bar-sn"></div></div>
+          <span class="detail-val" id="val-sn"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">决策控制</span>
+          <div class="detail-bar"><div class="detail-fill" id="bar-tf"></div></div>
+          <span class="detail-val" id="val-tf"></span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">策略模式</span>
+          <div class="detail-bar"><div class="detail-fill" id="bar-jp"></div></div>
+          <span class="detail-val" id="val-jp"></span>
+        </div>
+      </div>
+
+      <!-- 性格深度分析 -->
+      <div id="mind-analysis-container" class="mind-analysis-box"></div>
+
+      <!-- AI 深度解读 -->
+      <button id="btn-ai" class="btn-ai-reading" onclick="app.requestAIReading()">🤖 AI 深度解读</button>
+      <div id="ai-result-area" class="ai-result-box" style="display:none;"></div>
+
+      <!-- 操作 -->
+      <div class="result-actions">
+        <button class="btn-restart" onclick="app.restart()">🔄 重新测试</button>
+        <button class="btn-share" onclick="app.shareResult()">📤 分享结果</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/body-feel.js"></script>
+<script src="js/questions.js"></script>
+<script src="js/reports.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
