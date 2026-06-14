@@ -28,18 +28,51 @@ const app = {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   },
 
-  // ===== 开始测试 =====
+  // ===== 开始测试 → 选择方式 =====
   startTest() {
     this.state.bodyFeelAnswers = {};
     this.state.bodyFeelIdx = 0;
+    this.state.bloodInput = {};
     this.state.bodySkipped = false;
+    this.state.bloodMode = null; // 'feel' | 'blood'
     this.state.mbtiAnswers = {};
     this.state.mbtiCurrentIdx = 0;
     this.state.bodyResult = null;
     this.state.mindResult = null;
     this.state.aiText = null;
+    this.showScreen('choose');
+  },
+
+  // ===== 选身体问卷 =====
+  startBodyFeel() {
+    this.state.bloodMode = 'feel';
+    this.state.bodyFeelAnswers = {};
+    this.state.bodyFeelIdx = 0;
     this.showScreen('body-feel');
     this.renderBodyFeelQuestion();
+  },
+
+  // ===== 选血常规 =====
+  startBlood() {
+    this.state.bloodMode = 'blood';
+    this.showScreen('blood');
+  },
+
+  // ===== 血常规提交 =====
+  submitBloodForm() {
+    const getVal = (id) => { const el = document.getElementById(id); return el ? parseFloat(el.value) || undefined : undefined; };
+    const input = {
+      gender: document.querySelector('input[name="gender"]:checked')?.value || 'M',
+      wbc: getVal('inp-wbc'), neutPct: getVal('inp-neut'), lymphPct: getVal('inp-lymph'),
+      monoPct: getVal('inp-mono'), eosPct: getVal('inp-eos'), hgb: getVal('inp-hgb'),
+      plt: getVal('inp-plt'), crp: getVal('inp-crp'),
+    };
+    this.state.bloodInput = input;
+    this.state.bodyResult = BodyEngine.calculate(input, 3);
+    this.state.mbtiCurrentIdx = 0;
+    this.state.mbtiAnswers = {};
+    this.showScreen('mbti');
+    this.renderMbtiQuestion();
   },
 
   // ===== 跳过身体 → 仅性格 =====

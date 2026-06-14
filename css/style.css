@@ -306,8 +306,32 @@ body::after {
 .mind-analysis-section .reading-text { font-size: 14px; line-height: 1.9; color: #ccc; }
 .mind-analysis-section .reading-text p { margin-bottom: 12px; }
 
+/* ====== 选择测试方式 ====== */
+.choose-content { max-width: 460px; text-align: center; padding-top: 40px; }
+.choose-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.choose-sub { color: var(--text-dim); font-size: 14px; margin-bottom: 28px; }
+.choose-cards { display: flex; gap: 16px; }
+.choose-card {
+  flex: 1; background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius); padding: 28px 20px; cursor: pointer;
+  transition: var(--transition); backdrop-filter: blur(12px); position: relative;
+  text-align: center;
+}
+.choose-card:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-4px); }
+.choose-emoji { font-size: 40px; display: block; margin-bottom: 12px; }
+.choose-card h3 { font-size: 17px; margin-bottom: 8px; }
+.choose-card p { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+.choose-badge {
+  display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px;
+  font-weight: 700; margin-top: 10px;
+  background: rgba(249,115,22,0.15); color: var(--accent-body);
+}
+.choose-badge.alt { background: rgba(139,92,246,0.15); color: #c084fc; }
+
 /* 响应式 */
 @media (max-width: 480px) {
+  .choose-cards { flex-direction: column; }
+  .choose-title { font-size: 19px; }
   .title-main { font-size: 26px; }
   .dual-types { flex-direction: column; }
   .type-connector { transform: rotate(90deg); }
