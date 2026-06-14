@@ -32,7 +32,7 @@ const BODY_WEIGHTS = {
 
 // ===== API 配置 =====
 const API_CONFIG = {
-  baseURL: window.location.origin + '/api',
+  baseURL: 'https://fun-body-mbti-production.up.railway.app/api',
   aiProvider: 'openai',  // 'openai' | 'claude' | 'deepseek'
   aiModel: 'gpt-4o-mini',
 };
