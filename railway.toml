@@ -1,9 +1,11 @@
 [build]
 builder = "nixpacks"
-buildCommand = "cd server && npm install"
+
+[build.nixpacks]
+providers = ["node"]
 
 [deploy]
-startCommand = "cd server && node index.js"
+startCommand = "node server/index.js"
 
 [service]
 port = 3001
