@@ -1,8 +1,5 @@
 [build]
-builder = "nixpacks"
-
-[build.nixpacks]
-providers = ["node"]
+builder = "docker"
 
 [deploy]
 startCommand = "node server/index.js"
