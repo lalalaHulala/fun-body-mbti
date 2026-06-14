@@ -1,6 +1,7 @@
 {
   "version": 2,
   "buildCommand": "",
+  "buildCommand": "",
   "outputDirectory": ".",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "https://fun-body-mbti-production.up.railway.app/api/$1" }
